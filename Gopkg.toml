@@ -26,8 +26,16 @@
 
 
 [[constraint]]
+  branch = "master"
+  name = "github.com/lizrice/secure-connections"
+
+[[constraint]]
   name = "go.etcd.io/etcd"
   version = "3.3.13"
+
+[[constraint]]
+  name = "google.golang.org/grpc"
+  version = "1.7.5"
 
 [prune]
   go-tests = true
