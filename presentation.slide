@@ -1,0 +1,126 @@
+Accessing ETCD with Go
+GoLang Philly Meetup
+22 May 2019
+Tags: golangphilly, golang, ETCD
+
+Roberto Rojas
+robertojrojas@gmail.com
+@robertojrojas
+
+https://github.com/robertojrojas/etcd_by_example_Go
+
+* About Me
+
+- Enterprise Architect / Software Engineer
+- mainly working on backend services *nix for environments
+- Java, C/C++, NodeJS, and Python
+- 3+ years with Go
+
+
+* Agenda
+
+- Overview
+- Up and Running with the ETCD client
+- ETCD Features
+- Demos
+- Resources
+- Thank you
+
+
+* Overview
+gRPC is a high performance, open-source universal RPC framework.
+
+Google created gRPC from Stubby (internal cross-platform, scalable technology)
+
+Supported Languages
+
+    C++, Java, Objective-C, Python, Ruby, Go, C#, Node.js.
+    Java implementation supports Android and Objective-C is targeted at iOS.
+
+Options for Interservice Communications
+
+- REST is based on resources. You structure calls as HTTP calls against resources.
+
+- RPC is based on actions. You structure calls as function calls.
+
+
+* Why gRPC?
+
+- Cross language support
+- Scalable
+- Streaming
+- Binary protocol using Protocol Buffers
+- Extensible
+- Load balancing
+- The framework is layered, isolated from transport protocol
+- Strongly Typed Messaging
+- Fast and Efficient (gRPC site contains some benchmarks)
+- Cascading call-cancellation
+
+* Up and Running with gRPC
+
+- Install the Protocol Buffer v3 Compiler
+  https://github.com/google/protobuf/releases
+
+- Get the following packages
+   go get google.golang.org/grpc
+   go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+
+- Write the gRPC Service
+
+- Generate the gRPC Server/Client
+
+* Write the gRPC Service
+
+   syntax = "proto3";
+   option go_package = "docker/service";
+   message Container {
+     string id     = 1;
+     ...
+   }
+   message GetAllContainersRequest {}
+   ...
+   service DockerService {
+     rpc GetAllContainers(GetAllContainersRequest) returns (ContainerCatalog) {}
+     rpc GetContainerStats(ContainerStatsRequest) returns (stream ContainerStats) {}
+   }
+
+* RPC Call Styles
+
+- Unary
+   rpc GetAllContainers(GetAllContainersRequest) returns (ContainerCatalog) {}
+- Server Streaming
+   rpc GetContainerStats(ContainerStatsRequest) returns (stream ContainerStats) {}
+- Client Streaming
+   rpc Upload (stream FileRequest) returns (FileResponse) {}
+- Bidirectional Streaming
+   rpc Bidirectional (stream Input) returns (stream Ouptut) {}
+
+* Generate the gRPC Server/Client
+
+- Get gPRC Plugin - be installed in $GOBIN defaulting to $GOPATH/bin
+   go get -u github.com/golang/protobuf/protoc-gen-go
+
+- Generate Sources
+   protoc -I ./pb ./pb/docker/service.proto --go_out=plugins=grpc:.
+
+
+* Demos
+
+- Go File Transfer to Java File Server
+
+- Node.js Client to Go Docker Service
+
+
+* Resources
+
+   http://www.grpc.io/
+
+   https://github.com/grpc/grpc-go/tree/master/examples
+
+   https://developers.google.com/protocol-buffers/docs/reference/go-generated
+
+   https://app.pluralsight.com/library/courses/grpc-enhancing-application-communication
+
+   https://app.pluralsight.com/library/courses/protocol-buffers-beyond-json-xml
+
