@@ -18,6 +18,7 @@ jobs:
 
     - name: Build
       run: |
+        export PATH=$HOME/go/bin:$PATH
         go get -u golang.org/x/lint/golint
         go fmt ./...
         go list ./... | xargs -L1 golint
